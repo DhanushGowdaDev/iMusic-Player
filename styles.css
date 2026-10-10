@@ -1,37 +1,143 @@
+
+/* ==========================================
+   PREMIUM DARK MUSIC PLAYER
+   Complete CSS stylesheet
+   ========================================== */
+
+/* 1. DESIGN TOKENS */
 :root {
   --bg: #0b0b0f;
-  --surface: #17171d;
-  --surface-2: #22222b;
-  --text: #f4f4f5;
-  --muted: #8e8e93;
+  --surface: #15151b;
+  --surface-2: #202029;
+  --surface-3: #292932;
+
+  --text: #f5f5f7;
+  --muted: #a1a1aa;
   --accent: #fb2c5a;
-  --border: rgba(255,255,255,0.08);
+  --accent-hover: #ff5278;
+
+  --border: rgba(255, 255, 255, 0.09);
+  --border-hover: rgba(255, 255, 255, 0.16);
+
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 22px;
+  --radius-xl: 28px;
+
+  --shadow-card: 0 12px 35px rgba(0, 0, 0, 0.25);
+  --shadow-hover: 0 20px 45px rgba(0, 0, 0, 0.45);
+
+  --transition-fast: 160ms ease;
+  --transition-normal: 240ms ease;
 }
 
-* {
+/* 2. GLOBAL RESET */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
   -webkit-tap-highlight-color: transparent;
 }
 
-html, body {
+html {
   height: 100%;
+  scroll-behavior: smooth;
+  scrollbar-color: #383841 var(--bg);
 }
 
 body {
-  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
-  background: var(--bg);
+  min-height: 100%;
+  margin: 0;
+  font-family: "Plus Jakarta Sans", system-ui, sans-serif;
+  background:
+    radial-gradient(
+      ellipse at 50% -15%,
+      rgba(251, 44, 90, 0.055),
+      transparent 55%
+    ),
+    var(--bg);
   color: var(--text);
   overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+button {
+  color: inherit;
+  cursor: pointer;
+}
+
+button:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+img,
+svg,
+video {
+  max-width: 100%;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+::selection {
+  background: rgba(251, 44, 90, 0.3);
+  color: var(--text);
+}
+
+/* 3. TYPOGRAPHY */
 .serif {
-  font-family: 'Fraunces', serif;
+  font-family: "Fraunces", Georgia, serif;
   font-optical-sizing: auto;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.035em;
+}
+
+h1,
+h2,
+h3,
+h4,
+p {
+  overflow-wrap: break-word;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  letter-spacing: -0.025em;
+}
+
+p,
+.secondary-text,
+.text-muted {
+  color: var(--muted);
+}
+
+.text-muted {
+  font-size: 0.875rem;
+}
+
+/* 4. SCROLLBARS */
+.scrollarea {
+  overflow: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.12) transparent;
 }
 
 .scrollarea::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
 }
 
 .scrollarea::-webkit-scrollbar-track {
@@ -39,44 +145,72 @@ body {
 }
 
 .scrollarea::-webkit-scrollbar-thumb {
-  background: rgba(255,255,255,0.08);
+  background: rgba(255, 255, 255, 0.12);
   border-radius: 999px;
 }
 
 .scrollarea::-webkit-scrollbar-thumb:hover {
-  background: rgba(255,255,255,0.15);
+  background: rgba(255, 255, 255, 0.22);
+}
+
+.hide-scroll {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
 .hide-scroll::-webkit-scrollbar {
   display: none;
 }
 
-.hide-scroll {
-  scrollbar-width: none;
-}
-
+/* 5. NAVIGATION */
 .nav-item {
-  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 14px;
+  border-radius: var(--radius-sm);
+  color: var(--muted);
+  transition:
+    background var(--transition-fast),
+    color var(--transition-fast),
+    transform var(--transition-fast);
 }
 
 .nav-item:hover {
   background: var(--surface-2);
+  color: var(--text);
 }
 
 .nav-item.active {
-  background: var(--surface-2);
+  background: rgba(251, 44, 90, 0.1);
   color: var(--accent);
 }
 
+.nav-item:active {
+  transform: scale(0.98);
+}
+
+/* 6. TRACK ROWS */
 .track-row {
-  transition: background 0.15s ease;
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  border-radius: var(--radius-sm);
+  transition: background var(--transition-fast);
 }
 
-.track-row:hover {
-  background: rgba(255,255,255,0.04);
+.track-row:hover,
+.track-row:focus-within {
+  background: rgba(255, 255, 255, 0.055);
 }
 
-.track-row:hover .play-btn {
+.track-row .play-btn {
+  opacity: 0;
+  transition: opacity var(--transition-fast);
+}
+
+.track-row:hover .play-btn,
+.track-row:focus-within .play-btn {
   opacity: 1;
 }
 
@@ -84,59 +218,80 @@ body {
   opacity: 0;
 }
 
-.play-btn {
-  opacity: 0;
-  transition: opacity 0.15s ease;
-}
-
 .track-num {
-  transition: opacity 0.15s ease;
+  transition: opacity var(--transition-fast);
 }
 
+.play-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text);
+}
+
+/* 7. ALBUM CARDS */
 .album-card {
-  transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+  min-width: 0;
   cursor: pointer;
+  border-radius: var(--radius-md);
+  transition:
+    transform var(--transition-normal),
+    background var(--transition-normal);
 }
 
 .album-card:hover {
-  transform: translateY(-4px);
-}
-
-.album-card:hover .album-shadow {
-  box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+  transform: translateY(-5px);
 }
 
 .album-shadow {
-  transition: box-shadow 0.3s ease;
+  overflow: hidden;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+  transition: box-shadow var(--transition-normal);
+}
+
+.album-card:hover .album-shadow {
+  box-shadow: var(--shadow-hover);
 }
 
 .artwork-placeholder {
-  background: linear-gradient(135deg, #3a3a42 0%, #1f1f27 100%);
   display: flex;
   align-items: center;
   justify-content: center;
+  aspect-ratio: 1;
+  overflow: hidden;
+  border-radius: var(--radius-md);
+  background:
+    radial-gradient(
+      circle at 30% 20%,
+      rgba(251, 44, 90, 0.2),
+      transparent 60%
+    ),
+    linear-gradient(145deg, #30303a, #17171e);
 }
 
-@keyframes pulse-ring {
-  0% {
-  transform: scale(1);
-  opacity: 0.6;
+.artwork-placeholder img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
-100% {
-  transform: scale(1.4);
-  opacity: 0;
-}
-
+/* 8. PLAYBACK INDICATOR */
+.playing-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  height: 16px;
 }
 
 .playing-indicator span {
   display: inline-block;
-  width: 2px;
+  width: 3px;
   background: var(--accent);
-  margin-right: 2px;
-  border-radius: 1px;
+  border-radius: 2px;
   animation: bars 1s ease-in-out infinite;
+  transform-origin: center;
 }
 
 .playing-indicator span:nth-child(1) {
@@ -145,7 +300,7 @@ body {
 }
 
 .playing-indicator span:nth-child(2) {
-  height: 12px;
+  height: 13px;
   animation-delay: 0.2s;
 }
 
@@ -155,83 +310,157 @@ body {
 }
 
 @keyframes bars {
-  0%, 100% {
-  transform: scaleY(0.5);
+  0%,
+  100% {
+    transform: scaleY(0.5);
+  }
+
+  50% {
+    transform: scaleY(1);
+  }
 }
 
-50% {
-  transform: scaleY(1);
+@keyframes pulse-ring {
+  0% {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+
+  100% {
+    transform: scale(1.4);
+    opacity: 0;
+  }
 }
 
-}
-
+/* 9. PROGRESS BAR */
 .progress-track {
-  height: 4px;
-  background: rgba(255,255,255,0.15);
-  border-radius: 999px;
-  cursor: pointer;
   position: relative;
+  height: 4px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.16);
+  cursor: pointer;
+  touch-action: pan-y;
 }
 
 .progress-fill {
-  height: 100%;
-  background: var(--text);
-  border-radius: 999px;
   position: relative;
   width: 0%;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--text);
+  transition: background var(--transition-fast);
 }
 
 .progress-track:hover .progress-fill {
   background: var(--accent);
 }
 
-.progress-track:hover .progress-thumb {
+.progress-thumb {
+  position: absolute;
+  top: 50%;
+  right: -6px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--text);
+  box-shadow: 0 0 0 4px rgba(251, 44, 90, 0.12);
+  transform: translateY(-50%);
+  opacity: 0;
+  transition: opacity var(--transition-fast);
+}
+
+.progress-track:hover .progress-thumb,
+.progress-track:focus-within .progress-thumb {
   opacity: 1;
 }
 
-.progress-thumb {
-  position: absolute;
-  right: -6px;
-  top: 50%;
-  width: 12px;
-  height: 12px;
-  background: var(--text);
-  border-radius: 50%;
-  transform: translateY(-50%);
-  opacity: 0;
-  transition: opacity 0.15s ease;
-}
-
+/* 10. VOLUME CONTROL */
 .volume-track {
+  position: relative;
   width: 100px;
   height: 4px;
-  background: rgba(255,255,255,0.15);
+  flex-shrink: 0;
   border-radius: 999px;
+  background: rgba(255, 255, 255, 0.16);
   cursor: pointer;
-  position: relative;
+  touch-action: pan-y;
 }
 
 .volume-fill {
-  height: 100%;
-  background: var(--text);
-  border-radius: 999px;
   width: 70%;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--text);
+  transition: background var(--transition-fast);
 }
 
+.volume-track:hover .volume-fill {
+  background: var(--accent);
+}
+
+/* 11. ICON BUTTONS */
+.btn-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--text);
+  transition:
+    background var(--transition-fast),
+    transform var(--transition-fast),
+    color var(--transition-fast);
+}
+
+.btn-icon:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.btn-icon:active {
+  transform: scale(0.94);
+}
+
+.btn-icon:disabled {
+  opacity: 0.3;
+}
+
+.btn-icon:disabled:hover {
+  background: transparent;
+}
+
+/* 12. FILTER CHIPS */
 .chip {
-  padding: 8px 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 9px 16px;
+  border: 1px solid var(--border);
   border-radius: 999px;
   background: var(--surface);
-  border: 1px solid var(--border);
+  color: var(--text);
   font-size: 13px;
   font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s ease;
   white-space: nowrap;
+  cursor: pointer;
+  transition:
+    background var(--transition-fast),
+    color var(--transition-fast),
+    border-color var(--transition-fast),
+    transform var(--transition-fast);
 }
 
 .chip:hover {
   background: var(--surface-2);
+  border-color: var(--border-hover);
+}
+
+.chip:active {
+  transform: scale(0.97);
 }
 
 .chip.active {
@@ -240,27 +469,84 @@ body {
   border-color: var(--text);
 }
 
-.fade-in {
-  animation: fadeIn 0.4s ease;
+/* 13. HERO SECTION */
+.gradient-hero {
+  background:
+    radial-gradient(
+      ellipse at top left,
+      rgba(251, 44, 90, 0.14),
+      transparent 52%
+    ),
+    radial-gradient(
+      ellipse at bottom right,
+      rgba(251, 180, 44, 0.06),
+      transparent 50%
+    ),
+    linear-gradient(180deg, #191920 0%, var(--bg) 100%);
 }
 
-@keyframes fadeIn {
-  from {
+/* 14. SEARCH */
+.search-input {
+  width: 100%;
+  min-width: 0;
+  padding: 12px 16px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  outline: none;
+  background: var(--surface);
+  color: var(--text);
+  transition:
+    background var(--transition-fast),
+    border-color var(--transition-fast),
+    box-shadow var(--transition-fast);
+}
+
+.search-input::placeholder {
+  color: #85858f;
+}
+
+.search-input:focus {
+  border-color: var(--accent);
+  background: var(--surface-2);
+  box-shadow: 0 0 0 3px rgba(251, 44, 90, 0.12);
+}
+
+/* 15. TOAST NOTIFICATIONS */
+.toast {
+  position: fixed;
+  z-index: 100;
+  bottom: 110px;
+  left: 50%;
+  max-width: calc(100vw - 32px);
+  padding: 12px 20px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: rgba(36, 36, 45, 0.95);
+  color: var(--text);
+  font-size: 14px;
+  text-align: center;
   opacity: 0;
-  transform: translateY(8px);
+  pointer-events: none;
+  transform: translate(-50%, 20px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  transition:
+    opacity var(--transition-normal),
+    transform var(--transition-normal);
 }
 
-to {
+.toast.show {
   opacity: 1;
-  transform: translateY(0);
+  transform: translate(-50%, 0);
 }
 
-}
-
+/* 16. LOADING SPINNER */
 .spinner {
   width: 20px;
   height: 20px;
-  border: 2px solid rgba(255,255,255,0.1);
+  flex-shrink: 0;
+  border: 2px solid rgba(255, 255, 255, 0.12);
   border-top-color: var(--accent);
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
@@ -268,86 +554,153 @@ to {
 
 @keyframes spin {
   to {
-  transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
 }
 
+/* 17. FADE-IN ANIMATION */
+.fade-in {
+  animation: fadeIn 0.4s ease both;
 }
 
-.gradient-hero {
-  background:
-      radial-gradient(ellipse at top left, rgba(251, 44, 90, 0.15), transparent 50%),
-      radial-gradient(ellipse at bottom right, rgba(251, 180, 44, 0.08), transparent 50%),
-      linear-gradient(180deg, var(--surface) 0%, var(--bg) 100%);
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-.btn-icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  transition: background 0.15s ease;
+/* 18. DETAILS / ACCORDIONS */
+details summary {
+  list-style: none;
   cursor: pointer;
-}
-
-.btn-icon:hover {
-  background: rgba(255,255,255,0.08);
-}
-
-.btn-icon:disabled {
-  opacity: 0.3;
-  cursor: not-allowed;
-}
-
-.btn-icon:disabled:hover {
-  background: transparent;
-}
-
-.toast {
-  position: fixed;
-  bottom: 110px;
-  left: 50%;
-  transform: translateX(-50%) translateY(20px);
-  background: var(--surface-2);
-  color: var(--text);
-  padding: 12px 20px;
-  border-radius: 12px;
-  border: 1px solid var(--border);
-  font-size: 14px;
-  opacity: 0;
-  pointer-events: none;
-  transition: all 0.3s ease;
-  z-index: 100;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
-}
-
-.toast.show {
-  opacity: 1;
-  transform: translateX(-50%) translateY(0);
-}
-
-.search-input {
-  background: var(--surface);
-  border: 1px solid transparent;
-  transition: all 0.2s ease;
-}
-
-.search-input:focus {
-  border-color: var(--accent);
-  background: var(--surface-2);
-  outline: none;
 }
 
 details summary::-webkit-details-marker {
   display: none;
 }
 
-details summary {
-  list-style: none;
-  cursor: pointer;
+details summary::marker {
+  content: "";
 }
 
-body {
-  box-sizing: border-box;
+/* 19. KEYBOARD ACCESSIBILITY */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.progress-track:focus-visible,
+.volume-track:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 5px;
+}
+
+/* 20. TABLET RESPONSIVENESS */
+@media (max-width: 1024px) {
+  .album-card:hover {
+    transform: translateY(-2px);
+  }
+
+  .album-card:hover .album-shadow {
+    box-shadow: var(--shadow-card);
+  }
+
+  .volume-track {
+    width: 75px;
+  }
+}
+
+/* 21. MOBILE RESPONSIVENESS */
+@media (max-width: 640px) {
+  html,
+  body {
+    min-height: 100%;
+  }
+
+  body {
+    min-width: 320px;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+
+  .chip {
+    padding: 8px 12px;
+    font-size: 12px;
+  }
+
+  .btn-icon {
+    width: 36px;
+    height: 36px;
+  }
+
+  .album-card {
+    border-radius: var(--radius-sm);
+  }
+
+  .album-shadow {
+    border-radius: var(--radius-sm);
+  }
+
+  .artwork-placeholder {
+    border-radius: var(--radius-sm);
+  }
+
+  .toast {
+    bottom: 90px;
+    padding: 11px 16px;
+    font-size: 13px;
+  }
+
+  .volume-track {
+    width: 60px;
+  }
+}
+
+/* 22. TOUCH DEVICES */
+@media (hover: none) {
+  .play-btn {
+    opacity: 1;
+  }
+
+  .track-row:hover {
+    background: transparent;
+  }
+
+  .track-row:hover .track-num {
+    opacity: 1;
+  }
+
+  .album-card:hover {
+    transform: none;
+  }
+
+  .album-card:hover .album-shadow {
+    box-shadow: var(--shadow-card);
+  }
+
+  .btn-icon:hover {
+    background: transparent;
+  }
+
+  .progress-thumb {
+    opacity: 1;
+  }
+}
+
+/* 23. REDUCED MOTION ACCESSIBILITY */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
